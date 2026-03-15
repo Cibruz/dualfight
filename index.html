@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cowboy Duel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- MAIN MENU -->
+
+<div id="menu">
+
+<h1 class="title">🤠 Cowboy Duel</h1>
+
+<p class="subtitle">Quick draw strategy duel</p>
+
+<div class="menu-buttons">
+
+<button onclick="startGame('ai')">VS AI</button>
+
+<button onclick="startGame('local')">VS Player</button>
+
+<button onclick="startGame('tournament')">Tournament</button>
+
+</div>
+
+<div class="instructions">
+
+<h3>How to Play</h3>
+
+<p>🔫 Shoot beats Reload</p>
+<p>🔄 Reload gives bullets</p>
+<p>🛡 Defend blocks shots(3 shields)</p>
+<p>❤️ You have 3 lives</p>
+
+</div>
+
+</div>
+
+<!-- GAME AREA -->
+
+<div id="game" style="display:none">
+
+<div class="arena">
+
+<div class="player">
+<h2>Player 1</h2>
+<p id="p1Lives"></p>
+<p>🔫 <span id="p1Bullets"></span></p>
+<p>🛡 <span id="p1Shields"></span></p>
+</div>
+
+<div class="duel-scene">
+<h1 id="countdown">3</h1>
+</div>
+
+<div class="player">
+<h2 id="enemyTitle">Enemy</h2>
+<p id="p2Lives"></p>
+<p>🔫 <span id="p2Bullets"></span></p>
+<p>🛡 <span id="p2Shields"></span></p>
+</div>
+
+</div>
+
+
+<div id="controls">
+
+<button onclick="chooseMove('shoot')">🔫 Shoot</button>
+<button onclick="chooseMove('reload')">🔄 Reload</button>
+<button onclick="chooseMove('defend')">🛡 Defend</button>
+
+</div>
+
+<h2 id="result"></h2>
+
+</div>
+
+
+<script src="game.js"></script>
+
+</body>
+</html>
