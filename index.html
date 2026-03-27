@@ -1,84 +1,371 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Cowboy Duel</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cowboy Duel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rye&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- MAIN MENU -->
+  <!-- PAGE: CREATE PROFILE (shown on first visit) -->
+  <div id="page-profile-create" style="display:none">
+    <h1 class="title">🤠 Cowboy Duel</h1>
+    <p class="subtitle">Create your profile to get started</p>
+    <div class="setup-form">
+      <div class="name-field">
+        <label>Choose Your Avatar</label>
+        <div class="avatar-grid">
+          <button class="avatar-opt selected" onclick="selectAvatar('🤠')">🤠</button>
+          <button class="avatar-opt" onclick="selectAvatar('🐎')">🐎</button>
+          <button class="avatar-opt" onclick="selectAvatar('🦅')">🦅</button>
+          <button class="avatar-opt" onclick="selectAvatar('🌵')">🌵</button>
+          <button class="avatar-opt" onclick="selectAvatar('💀')">💀</button>
+          <button class="avatar-opt" onclick="selectAvatar('🐺')">🐺</button>
+          <button class="avatar-opt" onclick="selectAvatar('🦊')">🦊</button>
+          <button class="avatar-opt" onclick="selectAvatar('🐻')">🐻</button>
+          <button class="avatar-opt" onclick="selectAvatar('🦁')">🦁</button>
+          <button class="avatar-opt" onclick="selectAvatar('🐯')">🐯</button>
+          <button class="avatar-opt" onclick="selectAvatar('👻')">👻</button>
+          <button class="avatar-opt" onclick="selectAvatar('🤖')">🤖</button>
+          <button class="avatar-opt" onclick="selectAvatar('👽')">👽</button>
+          <button class="avatar-opt" onclick="selectAvatar('🐉')">🐉</button>
+          <button class="avatar-opt" onclick="selectAvatar('⚡')">⚡</button>
+          <button class="avatar-opt" onclick="selectAvatar('🎯')">🎯</button>
+        </div>
+      </div>
+      <div class="name-field">
+        <label for="profileNameInput">Your Cowboy Name</label>
+        <input id="profileNameInput" type="text" maxlength="16"
+               placeholder="Enter your name…"
+               onkeydown="if(event.key==='Enter') createProfile()" />
+        <span id="profileError" class="field-error"></span>
+      </div>
+      <p class="profile-note">Your name and avatar show in all duels and tournaments.</p>
+      <button class="btn-start" onclick="createProfile()">Create Profile</button>
+    </div>
+  </div>
 
-<div id="menu">
+  <!-- PAGE: MAIN MENU -->
+  <div id="page-menu" style="display:none">
+    <h1 class="title">🤠 Cowboy Duel</h1>
+    <p id="menuProfileBadge" class="profile-badge"></p>
+    <button class="btn-edit-profile" onclick="openProfileEdit()">✏️ Edit profile</button>
 
-<h1 class="title">🤠 Cowboy Duel</h1>
+    <div class="mode-cards">
+      <button class="mode-card" onclick="openLobbyPage()">
+        <span class="mode-icon">👥</span>
+        <div class="mode-text">
+          <span class="mode-name">VS Player</span>
+          <span class="mode-desc">Challenge a friend via lobby code</span>
+        </div>
+      </button>
+      <button class="mode-card" onclick="showPage('page-vsai')">
+        <span class="mode-icon">🤖</span>
+        <div class="mode-text">
+          <span class="mode-name">VS AI</span>
+          <span class="mode-desc">Face the computer — 3 difficulty levels</span>
+        </div>
+      </button>
+      <button class="mode-card" onclick="openTournamentPage()">
+        <span class="mode-icon">🏆</span>
+        <div class="mode-text">
+          <span class="mode-name">Tournament</span>
+          <span class="mode-desc">Invite friends — unlimited players, bracket format</span>
+        </div>
+      </button>
+    </div>
 
-<p class="subtitle">Quick draw strategy duel</p>
+    <div class="instructions">
+      <h3>How to Play</h3>
+      <p>🔫 <strong>Shoot</strong> vs Reload — reloader loses 1 HP</p>
+      <p>🛡 <strong>Defend</strong> vs Shoot — shot blocked, shield used</p>
+      <p>🔄 <strong>Reload</strong> vs Shield — nothing happens</p>
+      <p>💡 Start with 3 bullets · max 5 · 3 shields · 3 HP</p>
+    </div>
+  </div>
 
-<div class="menu-buttons">
+  <!-- PAGE: VS AI DIFFICULTY -->
+  <div id="page-vsai" style="display:none">
+    <h1 class="title">🤖 VS AI</h1>
+    <p class="subtitle">Choose your opponent</p>
 
-<button onclick="startGame('ai')">VS AI</button>
+    <div class="difficulty-cards">
 
-<button onclick="startGame('local')">VS Player</button>
+      <button class="diff-card diff-easy" onclick="startVsAI('easy')">
+        <div class="diff-header">
+          <span class="diff-icon">🤠</span>
+          <span class="diff-badge">Easy</span>
+        </div>
+        <div class="diff-name">Dusty Pete</div>
+        <div class="diff-desc">Shoots randomly — great for learning the ropes</div>
+      </button>
 
-<button onclick="startGame('tournament')">Tournament</button>
+      <button class="diff-card diff-medium" onclick="startVsAI('medium')">
+        <div class="diff-header">
+          <span class="diff-icon">🐺</span>
+          <span class="diff-badge">Medium</span>
+        </div>
+        <div class="diff-name">Sheriff Kane</div>
+        <div class="diff-desc">Watches your ammo and shields before moving</div>
+      </button>
 
-</div>
+      <button class="diff-card diff-hard" onclick="startVsAI('hard')">
+        <div class="diff-header">
+          <span class="diff-icon">💀</span>
+          <span class="diff-badge">Hard</span>
+        </div>
+        <div class="diff-name">El Diablo</div>
+        <div class="diff-desc">Reads your last move and counters — no mercy</div>
+      </button>
 
-<div class="instructions">
+    </div>
 
-<h3>How to Play</h3>
+    <button class="btn-back" onclick="showPage('page-menu')">← Back</button>
+  </div>
 
-<p>🔫 Shoot beats Reload</p>
-<p>🔄 Reload gives bullets</p>
-<p>🛡 Defend blocks shots(3 shields)</p>
-<p>❤️ You have 3 lives</p>
+  <!-- PAGE: TOURNAMENT (create or join) -->
+  <div id="page-tournament" style="display:none">
+    <h1 class="title">🏆 Tournament</h1>
+    <p class="subtitle">Bracket competition — any number of players</p>
 
-</div>
+    <div class="lobby-panels">
+      <div class="lobby-panel">
+        <h3>Host a Tournament</h3>
+        <p>Create a lobby, invite friends, then start when everyone has joined.</p>
+        <button class="btn-start" onclick="createTournament()">Create Tournament</button>
+      </div>
+      <div class="lobby-divider">OR</div>
+      <div class="lobby-panel">
+        <h3>Join a Tournament</h3>
+        <p>Enter the code your friend shared.</p>
+        <input id="tCodeInput" type="text" maxlength="6" placeholder="Enter code…" class="code-input"
+               oninput="this.value=this.value.toUpperCase()"
+               onkeydown="if(event.key==='Enter') joinTournament()" />
+        <button class="btn-start" onclick="joinTournament()">Join</button>
+      </div>
+    </div>
 
-</div>
+    <span id="tError" class="field-error lobby-error"></span>
+    <button class="btn-back" onclick="showPage('page-menu')">← Back</button>
+  </div>
 
-<!-- GAME AREA -->
+  <!-- PAGE: TOURNAMENT LOBBY (waiting room) -->
+  <div id="page-tournament-lobby" style="display:none">
+    <h1 class="title">🏆 Tournament Lobby</h1>
+    <p id="tLobbyStatus" class="subtitle"></p>
 
-<div id="game" style="display:none">
+    <div class="waiting-box">
+      <div id="tWaitingCode" class="lobby-code" onclick="copyLobbyCode('tWaitingCode')" title="Tap to copy">------</div>
+      <p id="tPlayerCount" class="waiting-status">0 players joined</p>
+    </div>
 
-<div class="arena">
+    <div id="tPlayerList" class="t-player-list"></div>
 
-<div class="player">
-<h2>Player 1</h2>
-<p id="p1Lives"></p>
-<p>🔫 <span id="p1Bullets"></span></p>
-<p>🛡 <span id="p1Shields"></span></p>
-</div>
+    <!-- AI Bot adder (host only, shown via JS) -->
+    <div id="tBotControls" style="display:none;text-align:center;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">
+        <select id="tBotDiff" class="code-input"
+                style="font-size:0.9rem;letter-spacing:0;font-weight:normal;padding:8px 14px;min-width:120px">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <button class="btn-back" style="margin-top:0" onclick="addTournamentBot()">+ Add AI Bot</button>
+      </div>
+      <p id="tBotCount" style="font-size:0.82rem;color:#7a4e2d;margin-top:6px;opacity:0.85"></p>
+    </div>
 
-<div class="duel-scene">
-<h1 id="countdown">3</h1>
-</div>
+    <button id="tStartBtn" class="btn-start" onclick="startTournament()" style="display:none">
+      ⚔️ Start Tournament
+    </button>
+    <span id="tLobbyError" class="field-error lobby-error"></span>
+    <button class="btn-back" onclick="leaveTournament()">← Leave</button>
+  </div>
 
-<div class="player">
-<h2 id="enemyTitle">Enemy</h2>
-<p id="p2Lives"></p>
-<p>🔫 <span id="p2Bullets"></span></p>
-<p>🛡 <span id="p2Shields"></span></p>
-</div>
+  <!-- PAGE: TOURNAMENT SPECTATE (watching a match) -->
+  <div id="page-tournament-spectate" style="display:none">
+    <h1 class="title">👀 Watching</h1>
+    <p id="tSpectateHeader" class="subtitle">Match 1 — Round 1</p>
 
-</div>
+    <div class="arena" style="max-width:500px">
+      <div class="player-card">
+        <div id="tSpec1Avatar" class="player-avatar">🤠</div>
+        <h2 id="tSpec1Name">Fighter 1</h2>
+        <p id="tSpec1Lives"></p>
+        <p>🔫 <span id="tSpec1Bullets">3</span> bullets</p>
+        <p>🛡 <span id="tSpec1Shields">3</span> shields</p>
+      </div>
+      <div class="duel-scene">
+        <div style="font-size:1.4rem;font-weight:bold;color:#999">VS</div>
+      </div>
+      <div class="player-card">
+        <div id="tSpec2Avatar" class="player-avatar">🤠</div>
+        <h2 id="tSpec2Name">Fighter 2</h2>
+        <p id="tSpec2Lives"></p>
+        <p>🔫 <span id="tSpec2Bullets">3</span> bullets</p>
+        <p>🛡 <span id="tSpec2Shields">3</span> shields</p>
+      </div>
+    </div>
 
+    <div id="tSpectateResult" style="margin:12px auto;font-size:1.1rem;font-weight:bold;max-width:500px;padding:0 16px;min-height:28px;text-align:center;color:#333"></div>
 
-<div id="controls">
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:8px">
+      <button class="btn-start" style="padding:10px 20px;font-size:0.9rem" onclick="openBracket()">📊 Bracket</button>
+      <button class="btn-back" style="margin-top:0" onclick="leaveTournament()">← Leave</button>
+    </div>
+  </div>
 
-<button onclick="chooseMove('shoot')">🔫 Shoot</button>
-<button onclick="chooseMove('reload')">🔄 Reload</button>
-<button onclick="chooseMove('defend')">🛡 Defend</button>
+  <!-- PAGE: TOURNAMENT WAIT (after match, waiting for next) -->
+  <div id="page-tournament-wait" style="display:none">
+    <h1 id="tWaitTitle" class="title">⚔️ Match Over</h1>
+    <p id="tWaitMsg" class="subtitle"></p>
 
-</div>
+    <div class="waiting-box" style="gap:12px">
+      <button class="btn-start" onclick="openBracket()">📊 View Bracket</button>
+      <button class="btn-start" style="background:#3498db" onclick="watchCurrentMatch()">👀 Watch Current Match</button>
+      <div id="tWaitElimSection" style="display:none;margin-top:4px">
+        <button class="btn-back" style="margin-top:0" onclick="leaveTournament()">← Leave Tournament</button>
+      </div>
+    </div>
 
-<h2 id="result"></h2>
+    <p style="font-size:0.82rem;color:#7a4e2d;opacity:0.7;margin-top:8px">You can leave at any time.</p>
+  </div>
 
-</div>
+  <!-- BRACKET OVERLAY -->
+  <div id="bracketOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto">
+    <div class="bracket-overlay-box">
+      <div class="bracket-overlay-header">
+        <span>🏆 Tournament Bracket</span>
+        <button class="bracket-close-btn" onclick="closeBracket()">✕</button>
+      </div>
+      <div class="bracket-scroll">
+        <div id="bracketTree" class="bracket-tree"></div>
+      </div>
+      <div style="text-align:center;margin-top:12px">
+        <button class="btn-start" style="padding:10px 20px;font-size:0.9rem" onclick="watchCurrentMatch()">👀 Watch Current Match</button>
+        <button class="btn-back" style="margin:0 0 0 8px" onclick="closeBracket()">Close</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- PAGE: LOBBY (create or join) -->
+  <div id="page-lobby" style="display:none">
+    <h1 class="title">👥 VS Player</h1>
+    <p class="subtitle">Play against a friend online</p>
 
-<script src="game.js"></script>
+    <div class="lobby-panels">
 
+      <div class="lobby-panel">
+        <h3>Create a Lobby</h3>
+        <p>Start a game and share the code with your friend.</p>
+        <button class="btn-start" onclick="createLobby()">Create Lobby</button>
+      </div>
+
+      <div class="lobby-divider">OR</div>
+
+      <div class="lobby-panel">
+        <h3>Join a Lobby</h3>
+        <p>Enter the code your friend sent you.</p>
+        <input id="lobbyCodeInput" type="text" maxlength="6"
+               placeholder="Enter code…" class="code-input"
+               oninput="this.value=this.value.toUpperCase()"
+               onkeydown="if(event.key==='Enter') joinLobby()" />
+        <button class="btn-start" onclick="joinLobby()">Join</button>
+      </div>
+
+    </div>
+
+    <span id="lobbyError" class="field-error lobby-error"></span>
+    <button class="btn-back" onclick="showPage('page-menu')">← Back</button>
+  </div>
+
+  <!-- PAGE: WAITING ROOM (after creating lobby) -->
+  <div id="page-waiting" style="display:none">
+    <h1 class="title">⏳ Waiting…</h1>
+    <p class="subtitle">Share this code with your opponent</p>
+
+    <div class="waiting-box">
+      <div id="waitingCode" class="lobby-code" onclick="copyLobbyCode('waitingCode')" title="Tap to copy">------</div>
+      <p id="waitingStatus" class="waiting-status">Waiting for opponent to join…</p>
+    </div>
+
+    <button class="btn-back" onclick="cancelLobby()">← Cancel</button>
+  </div>
+
+  <!-- GAME AREA -->
+  <div id="game" style="display:none">
+
+    <!-- Tournament Progress -->
+    <div id="tournamentProgress" style="display:none">
+      <p class="t-label">🏆 Tournament Progress</p>
+      <div class="t-steps">
+        <div class="t-step">Dusty Pete<br><small>Easy</small></div>
+        <div class="t-arrow">→</div>
+        <div class="t-step">Sheriff Kane<br><small>Medium</small></div>
+        <div class="t-arrow">→</div>
+        <div class="t-step">El Diablo<br><small>Hard</small></div>
+      </div>
+    </div>
+
+    <!-- Arena -->
+    <div class="arena">
+      <div class="player-card">
+        <div class="player-avatar" id="p1Avatar">🤠</div>
+        <h2 id="player1Title">Player 1</h2>
+        <p id="p1Lives"></p>
+        <p>🔫 <span id="p1Bullets"></span> bullets</p>
+        <p>🛡 <span id="p1Shields"></span> shields</p>
+      </div>
+
+      <div class="duel-scene">
+        <div id="countdown">3</div>
+        <div class="vs-label">VS</div>
+      </div>
+
+      <div class="player-card">
+        <div class="player-avatar" id="p2Avatar">🤠</div>
+        <h2 id="enemyTitle">Enemy</h2>
+        <p id="p2Lives"></p>
+        <p>🔫 <span id="p2Bullets"></span> bullets</p>
+        <p>🛡 <span id="p2Shields"></span> shields</p>
+      </div>
+    </div>
+
+    <!-- Bracket button (tournament only, shown via JS) -->
+    <div id="tBracketBtn" style="display:none;text-align:center;margin:4px auto">
+      <button class="btn-bracket-peek" onclick="openBracket()">📊 View Bracket</button>
+    </div>
+
+    <!-- Controls -->
+    <div id="controls">
+      <button id="btnShoot"  onclick="chooseMove('shoot')"  title="Costs 1 bullet">🔫 Shoot</button>
+      <button id="btnReload" onclick="chooseMove('reload')">🔄 Reload</button>
+      <button id="btnDefend" onclick="chooseMove('defend')">🛡 Defend</button>
+    </div>
+
+    <!-- Result message -->
+    <div id="result"></div>
+
+    <!-- Back to menu -->
+    <button class="btn-back" onclick="showMenu()">← Menu</button>
+  </div>
+
+  <!-- Winner Overlay -->
+  <div id="overlay">
+    <div class="overlay-box">
+      <div id="overlayMsg"></div>
+    </div>
+  </div>
+
+  <!-- Confetti canvas -->
+  <canvas id="confettiCanvas" style="display:none;position:fixed;inset:0;pointer-events:none;z-index:300"></canvas>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="game.js"></script>
 </body>
 </html>
